@@ -1,2 +1,2 @@
 # javascriptTutorials
-A tutorial on Java Script sybtax, variables, functions, events and JSON 
+A tutorial on Java Script syntax, variables, functions, events and JSON 
