@@ -13,7 +13,7 @@
 
 // there is usually a single onload function in a js file
 /*window.onload = function (){
-	// call any functions here wher gets called only after the window is completely loaded
+	// call any functions here will gets called only after the window is completely loaded
 	// prepareEventHandlers();
 }
 */

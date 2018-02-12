@@ -10,7 +10,7 @@ var year = 2011;
 
 var date, year, month; // we can declare multiple variables with a single var declerations.
 
-var date=3/18/2016, year=2016, month=3;
+var date = 3/18/2016, year = 2016, month = 3;
 
 // variables can hold many things strings, integers, arrays, functions etc
 // There is no strict type safety in javascript.
