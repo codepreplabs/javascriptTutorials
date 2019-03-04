@@ -3,7 +3,7 @@
 var score = score + 20;
 // or use the shorthand
 
-var score += 10;
+var score *= 10;
 
 // other common short hands are +=, -=, *=, /=
 
@@ -65,3 +65,5 @@ var two = 600;
 
 var three = one < two ? one : two;
 
+// typeof operator
+console.log(typeof one);
