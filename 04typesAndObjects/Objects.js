@@ -7,7 +7,7 @@ book.size = "100" // these are called as properties i.e. properties are nothing
                   //but variables inside the object
 
 // other ways of creating an object
-var book = { name: "javascript", size: 100, rating: 5 }
+var book = { name: "javascript", size: 100, rating: 5 };
 
 // associating a function with an object
 function bookInfo(){
