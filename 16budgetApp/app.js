@@ -136,7 +136,28 @@ var uiController = (function(){
             budgetPercentClass: '.budget__expenses--percentage',
             budgetValueClass: '.budget__value',
             containerClass: '.container',
-            expItemsPercentClass: '.item__percentage'
+            expItemsPercentClass: '.item__percentage',
+            monthClass: '.budget__title--month'
+        }
+        
+        var formatNumbers = function(num, type){
+            
+            var numSplit;
+            // + or - before the number based on expense type
+            // exactly two decimal points
+            // comma seperating the thousands
+            
+            num = Math.abs(num);
+            num = num.toFixed(2);
+            numSplit = num.split('.');
+            
+            int = numSplit[0];
+            if(int.length > 3){
+               int = int.substr(0, int.length - 3) + ',' + int.substr(int.length - 3, 3);
+            }
+            
+            dec = numSplit[1];
+            return (type === 'exp' ? '-' : '+') + ' '+ int +'.'+ dec;
         }
     
     return {
@@ -159,12 +180,12 @@ var uiController = (function(){
                html = '<div class="item clearfix" id="income-%id%"> <div class="item__description">%description%</div> <div class="right clearfix"> <div class="item__value">%value%</div> <div class="item__delete"> <button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button> </div> </div> </div>';
             } else {
                 element = uiDomStrings.expenseListClass;
-               html = '<div class="item clearfix" id="expense-%id%"> <div class="item__description">%description%</div> <div class="right clearfix"> <div class="item__value">- %value%</div> <div class="item__percentage"> --- </div> <div class="item__delete"> <button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button> </div></div> </div>';
+               html = '<div class="item clearfix" id="expense-%id%"> <div class="item__description">%description%</div> <div class="right clearfix"> <div class="item__value"> %value%</div> <div class="item__percentage"> --- </div> <div class="item__delete"> <button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button> </div></div> </div>';
             }
             
             // replace the placeholder text with some actual data
             htmlWithData = html.replace('%id%', obj.id);
-            htmlWithData = htmlWithData.replace('%value%', obj.value);
+            htmlWithData = htmlWithData.replace('%value%', formatNumbers(obj.value, type));
             htmlWithData = htmlWithData.replace('%description%', obj.description);
             
             // insert the html in to the DOM
@@ -208,8 +229,8 @@ var uiController = (function(){
         
         updateBudgetToUI: function(budget){
             
-            document.querySelector(uiDomStrings.incomeDisplayClass).textContent = '+ '+budget.totalinc;
-            document.querySelector(uiDomStrings.expenseDisplayClass).textContent = '- '+budget.totalExp;
+            document.querySelector(uiDomStrings.incomeDisplayClass).textContent = formatNumbers(budget.totalinc, 'inc');
+            document.querySelector(uiDomStrings.expenseDisplayClass).textContent = formatNumbers(budget.totalExp, 'exp');
             
             if(budget.percent > 0){
                document.querySelector(uiDomStrings.budgetPercentClass).textContent = budget.percent + '%';
@@ -217,9 +238,27 @@ var uiController = (function(){
                document.querySelector(uiDomStrings.budgetPercentClass).textContent = '---';
             }
             
-            document.querySelector(uiDomStrings.budgetValueClass).textContent = '+ '+budget.budget;
+            document.querySelector(uiDomStrings.budgetValueClass).textContent = formatNumbers(budget.budget, 'inc');
+        },
+        
+        displayMonth: function(){
+            
+            var now = new Date();
+            var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            index = now.getMonth();
+            year = now.getFullYear();
+            document.querySelector(uiDomStrings.monthClass).textContent = months[index]+','+year;
+        },
+        
+        changedTypeDisplay: function(){
+            
+            var fields = document.querySelectorAll(uiDomStrings.typeClass+','+uiDomStrings.descClass+','+ uiDomStrings.valueClass);
+            for(var i = 0; i < fields.length; i++){
+                fields[i].classList.toggle('red-focus');
+            }
+            document.querySelector(uiDomStrings.btnClass).classList.toggle('red');
         }
-    }
+    };
     
 })();
 
@@ -236,6 +275,7 @@ var controller = (function(budgetCtlr, uiCtlr){
         });
         
         document.querySelector(uiDomStrings.containerClass).addEventListener('click', ctrlDeleteItem);
+        document.querySelector(uiDomStrings.typeClass).addEventListener('change', uiCtlr.changedTypeDisplay);
     };
     
     var updateBudget = function(){
@@ -313,6 +353,7 @@ var controller = (function(budgetCtlr, uiCtlr){
         
         init: function(){
             setupEventListeners();
+            uiCtlr.displayMonth();
         }
     };
    
