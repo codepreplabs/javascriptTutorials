@@ -95,3 +95,11 @@ document.querySelector('.btn-hold').addEventListener('click', function(){
 })
 
 document.querySelector('.btn-new').addEventListener('click', init);
+
+/*
+CHALLENGES:
+
+1. A player looses his entire score when he roles two 6 in a row. After that, its the next players turn.
+2. Add an input field to the HTML where players can set the winning score so that they can change the predefined winning score
+3. Add another dice to the game so that there are two dices now. The player looses his current score when one of them is a 1.
+*/
